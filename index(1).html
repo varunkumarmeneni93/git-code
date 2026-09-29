@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fingerprint-Based Blood Group Detection</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.7;
+            background: #f4f8fb;
+            color: #222;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        header p {
+            font-size: 19px;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        nav {
+            background: #ffffff;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: #0d47a1;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #1976d2;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        section {
+            background: white;
+            padding: 35px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1976d2;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            color: #1565c0;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .workflow {
+            text-align: center;
+            background: #e3f2fd;
+            padding: 25px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0d47a1;
+            margin: 20px 0;
+        }
+
+        .blood-groups {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .blood-group {
+            background: #1976d2;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .tech-table th,
+        .tech-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .tech-table th {
+            background: #0d47a1;
+            color: white;
+        }
+
+        .tech-table tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .result {
+            background: #e8f5e9;
+            border-left: 5px solid #43a047;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        footer {
+            background: #0d47a1;
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 30px;
+            }
+
+            .blood-groups {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px;
+            }
+
+            section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Fingerprint-Based Blood Group Detection</h1>
+    <p>
+        A Non-Invasive Approach Using Machine Learning,
+        Computer Vision and Deep Learning
+    </p>
+</header>
+
+<nav>
+    <a href="#introduction">Introduction</a>
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#working">How It Works</a>
+    <a href="#technology">Technology</a>
+    <a href="#results">Results</a>
+    <a href="#limitations">Limitations</a>
+    <a href="#future">Future</a>
+    <a href="#conclusion">Conclusion</a>
+</nav>
+
+<div class="container">
+
+    <section id="introduction">
+        <h2>Introduction</h2>
+
+        <p>
+            Blood group identification is an important part of healthcare,
+            especially during emergency situations, blood transfusions,
+            surgeries, and medical treatments.
+        </p>
+
+        <p>
+            Traditionally, blood grouping is performed using a blood sample
+            and laboratory-based serological testing. Although this method
+            is reliable, it requires a blood sample, laboratory materials,
+            trained personnel, and time.
+        </p>
+
+        <p>
+            This project explores a different approach: using fingerprint
+            images and machine learning to predict a person's blood group.
+        </p>
+
+        <div class="highlight">
+            <strong>Note:</strong> This project is a machine-learning
+            research prototype. It is not intended to replace standard
+            clinical blood-group testing or to be used independently
+            for medical decisions.
+        </div>
+    </section>
+
+
+    <section id="problem">
+        <h2>The Problem</h2>
+
+        <p>
+            In conventional blood-group detection, a blood sample is
+            collected from the individual and tested using laboratory
+            procedures.
+        </p>
+
+        <p>
+            This process can require equipment, reagents, trained
+            professionals, and appropriate healthcare facilities.
+        </p>
+
+        <p>
+            In emergency or resource-constrained situations, obtaining
+            and testing a blood sample may not always be convenient.
+            The project therefore investigates whether biometric
+            information, specifically fingerprint patterns, can be used
+            as an additional method for predicting blood group.
+        </p>
+
+        <h3>Main Research Question</h3>
+
+        <p>
+            <strong>
+                Can machine learning identify patterns in fingerprint
+                images that can be used to predict a person's blood group?
+            </strong>
+        </p>
+    </section>
+
+
+    <section id="solution">
+        <h2>Our Proposed Solution</h2>
+
+        <p>
+            The proposed system uses fingerprint images as input and
+            applies image processing and deep learning techniques to
+            predict the blood group.
+        </p>
+
+        <div class="workflow">
+            Fingerprint Image → Preprocessing → Gabor Feature Extraction
+            → CNN Model → Blood Group Prediction
+        </div>
+
+        <p>
+            The system uses fingerprint images obtained using thermal
+            spectroscopic photoplethysmographic (PPG) sensor technology,
+            extracts relevant features using Gabor filters, and then
+            passes the processed information to a CNN classification model.
+        </p>
+
+        <h3>Supported Blood Groups</h3>
+
+        <div class="blood-groups">
+            <div class="blood-group">A+</div>
+            <div class="blood-group">A−</div>
+            <div class="blood-group">B+</div>
+            <div class="blood-group">B−</div>
+            <div class="blood-group">AB+</div>
+            <div class="blood-group">AB−</div>
+            <div class="blood-group">O+</div>
+            <div class="blood-group">O−</div>
+        </div>
+    </section>
+
+
+    <section id="working">
+        <h2>How the System Works</h2>
+
+        <h3>1. Fingerprint Image Collection</h3>
+        <p>
+            The first step is obtaining a fingerprint image. The fingerprint
+            contains patterns such as ridges and valleys that can be
+            processed as an image.
+        </p>
+
+        <h3>2. Image Preprocessing</h3>
+        <p>
+            Before the image is given to the CNN, it is processed to make
+            the important fingerprint patterns more suitable for feature
+            extraction.
+        </p>
+
+        <h3>3. Gabor Feature Extraction</h3>
+        <p>
+            Gabor filters are used to identify specific patterns and
+            orientations in an image. In fingerprint processing, these
+            filters can help emphasize ridge structures and other local
+            patterns.
+        </p>
+
+        <h3>4. CNN Classification</h3>
+        <p>
+            After feature extraction, the processed fingerprint image is
+            passed to a Convolutional Neural Network (CNN).
+        </p>
+
+        <p>
+            The CNN contains convolution and pooling layers followed by
+            fully connected layers. The final layer uses a softmax-based
+            classification approach to produce probabilities for the
+            blood-group classes.
+        </p>
+    </section>
+
+
+    <section id="technology">
+        <h2>Technology Stack</h2>
+
+        <table class="tech-table">
+            <tr>
+                <th>Technology</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>Python</td>
+                <td>Main programming language</td>
+            </tr>
+
+            <tr>
+                <td>Django</td>
+                <td>Web application framework</td>
+            </tr>
+
+            <tr>
+                <td>OpenCV</td>
+                <td>Image processing</td>
+            </tr>
+
+            <tr>
+                <td>NumPy</td>
+                <td>Numerical operations</td>
+            </tr>
+
+            <tr>
+                <td>Keras / TensorFlow</td>
+                <td>CNN development and training</td>
+            </tr>
+
+            <tr>
+                <td>Scikit-learn</td>
+                <td>Dataset splitting and performance metrics</td>
+            </tr>
+
+            <tr>
+                <td>Gabor Filters</td>
+                <td>Fingerprint feature extraction</td>
+            </tr>
+
+            <tr>
+                <td>HTML</td>
+                <td>Web interface</td>
+            </tr>
+        </table>
+    </section>
+
+
+    <section id="training">
+        <h2>Training the Machine Learning Model</h2>
+
+        <p>
+            The dataset is divided into training and testing portions.
+            The implementation uses an <strong>80:20 train-test split</strong>.
+        </p>
+
+        <p>
+            During training, the CNN learns from fingerprint images
+            associated with their corresponding blood-group labels.
+        </p>
+
+        <p>
+            The model is trained using the Adam optimizer and categorical
+            cross-entropy loss.
+        </p>
+
+        <h3>Performance Metrics</h3>
+
+        <ul>
+            <li>Accuracy</li>
+            <li>Precision</li>
+            <li>Recall</li>
+            <li>F1-score</li>
+        </ul>
+
+        <p>
+            The training process was configured for up to 40 epochs.
+        </p>
+    </section>
+
+
+    <section id="results">
+        <h2>Results</h2>
+
+        <div class="result">
+            <h3>Reported Performance</h3>
+
+            <p>
+                The project reported approximately
+                <strong>97% test accuracy</strong> on its dataset.
+            </p>
+        </div>
+
+        <p>
+            The application was also tested with fingerprint images
+            representing different blood-group classes.
+        </p>
+
+        <p>
+            These results show that the developed model was able to learn
+            useful patterns from the available fingerprint dataset.
+        </p>
+
+        <div class="highlight">
+            The reported result comes from the project's experimental
+            dataset. A larger and more diverse dataset, independent
+            validation, and healthcare-based testing would be required
+            before considering such a system for real-world clinical use.
+        </div>
+    </section>
+
+
+    <section id="webapp">
+        <h2>Web Application</h2>
+
+        <p>
+            A Django web application was developed to make the
+            machine-learning model easier to use.
+        </p>
+
+        <h3>Login</h3>
+        <p>
+            Users can log into the system before accessing the application.
+        </p>
+
+        <h3>Train ML Algorithm</h3>
+        <p>
+            The administrator or authorized user can train the
+            machine-learning model using the available dataset.
+        </p>
+
+        <h3>Blood Group Prediction</h3>
+        <p>
+            A fingerprint image can be uploaded to the system. The image
+            is processed and passed to the trained CNN model, which
+            generates the predicted blood group.
+        </p>
+
+        <h3>Logout</h3>
+        <p>
+            Users can securely exit the application.
+        </p>
+    </section>
+
+
+    <section id="limitations">
+        <h2>Challenges and Limitations</h2>
+
+        <h3>Dataset Size</h3>
+        <p>
+            A larger and more diverse fingerprint dataset could provide
+            stronger evidence about model performance.
+        </p>
+
+        <h3>Image Quality</h3>
+        <p>
+            Fingerprint images can vary because of sensor quality,
+            finger position, pressure, noise, and other image-capture
+            conditions.
+        </p>
+
+        <h3>Generalization</h3>
+        <p>
+            A model that performs well on one dataset may not necessarily
+            achieve the same performance on images collected from a
+            different population or sensor.
+        </p>
+
+        <h3>Medical Validation</h3>
+        <p>
+            Real-world healthcare deployment would require extensive
+            independent validation, collaboration with healthcare
+            professionals, and appropriate regulatory evaluation.
+        </p>
+    </section>
+
+
+    <section id="future">
+        <h2>Future Improvements</h2>
+
+        <h3>1. Larger Dataset</h3>
+        <p>
+            Collect a larger and more diverse dataset of fingerprint images.
+        </p>
+
+        <h3>2. Advanced Deep Learning Models</h3>
+        <p>
+            Future versions could investigate Transformer-based approaches
+            and hybrid models.
+        </p>
+
+        <h3>3. Multiple Biometric Inputs</h3>
+        <p>
+            Other biometric information such as palm prints and retinal
+            scans could also be explored.
+        </p>
+
+        <h3>4. Mobile and Embedded Applications</h3>
+        <p>
+            The model could potentially be optimized for real-time
+            processing and deployment on mobile or embedded devices.
+        </p>
+
+        <h3>5. Healthcare Validation</h3>
+        <p>
+            Collaboration with healthcare providers could be used to
+            conduct real-world testing and validation.
+        </p>
+    </section>
+
+
+    <section id="conclusion">
+        <h2>Conclusion</h2>
+
+        <p>
+            <strong>Fingerprint-Based Blood Group Detection</strong> is an
+            exploration of how machine learning and biometric image
+            processing can be combined for blood-group prediction.
+        </p>
+
+        <p>
+            The project uses fingerprint images, Gabor filters, and a CNN
+            model to classify eight blood-group categories. A Django web
+            application provides an interface for training the model and
+            performing predictions.
+        </p>
+
+        <p>
+            The project reported approximately <strong>97% test accuracy</strong>
+            on its dataset, demonstrating the potential of the approach
+            within the experimental setting.
+        </p>
+
+        <p>
+            The next step is to build a more robust system through larger
+            datasets, independent testing, real-world validation,
+            improved models, and appropriate healthcare evaluation.
+        </p>
+    </section>
+
+
+    <section>
+        <h2>Technologies Used</h2>
+
+        <p>
+            <strong>
+                Python | Django | TensorFlow | Keras | OpenCV |
+                NumPy | Scikit-learn | CNN | Gabor Filters
+            </strong>
+        </p>
+    </section>
+
+</div>
+
+
+<footer>
+    <p><strong>Fingerprint-Based Blood Group Detection</strong></p>
+    <p>Artificial Intelligence | Machine Learning | Computer Vision</p>
+    <p>© 2026 Hackathon Project</p>
+</footer>
+
+</body>
+</html>
